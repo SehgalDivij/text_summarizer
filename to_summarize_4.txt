@@ -1,0 +1,15 @@
+First and foremost, it is important to understand that word2vec is not a single monolithic algorithm. In fact, word2vec contains two distinct models (CBOW and skip-gram), each with two different training methods (with/without negative sampling) and other variations (e.g. hierarchical softmax), which amount to small "space" of algorithms. To top that, it also contains a honed pre-processing pipeline, whose effects on the overall performance have yet to be studied properly.
+
+Another thing that's important to understand, is that word2vec is not deep learning; both CBOW and skip-gram are "shallow" neural models. Tomas Mikolov even told me that the whole idea behind word2vec was to demonstrate that you can get better word representations if you trade the model's complexity for efficiency, i.e. the ability to learn from much bigger datasets.
+
+In his papers, Mikolov recommends using the skip-gram model with negative sampling (SGNS), as it outperformed the other variants on analogy tasks.
+Distributed Representations of Words and Phrases and their Compositionality
+
+Yoav Goldberg and I wrote an in-depth explanation of how SGNS works:
+word2vec Explained: Deriving Mikolov et al.'s Negative-Sampling Word-Embedding Method
+It's not a very long read, but still a little too long for me to port it to Quora.
+
+We later found out that SGNS is implicitly factorizing a word-context matrix, whose cells are the pointwise mutual information (PMI) of the respective word and context pairs, shifted by a global constant:
+Neural Word Embeddings as Implicit Matrix Factorization
+
+PMI matrices are commonly used by the traditional approach to represent words (often dubbed "distributional semantics"). What's really striking about this discovery, is that word2vec (specifically, SGNS) is doing something very similar to what the NLP community has been doing for about 20 years; it's just doing it really well.
